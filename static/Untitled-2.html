@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Audio Input Example</h1>
+    <canvas id="visualizer" width="600" height="200"></canvas>
+    <button id="startButton">Start Recording</button>
+  
+    <script>
+      var audioContext = new AudioContext();
+      var mediaStream;
+      var recorder;
+      var chunks = [];
+  
+      // Create a MediaRecorder to handle audio input
+      function startRecording() {
+        mediaStream = navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(function(stream) {
+            recorder = new MediaRecorder(stream);
+            recorder.start();
+            console.log('Recording started.');
+  
+            // Handle data available events
+            recorder.addEventListener('dataavailable', function(event) {
+              console.log('Data available.');
+              chunks.push(event.data);
+            });
+  
+            // Handle recording stopped event
+            recorder.addEventListener('stop', function(event) {
+              console.log('Recording stopped.');
+  
+              // Create a new Blob from the chunks of recorded data
+              var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+              chunks = [];
+  
+              // Create a URL for the Blob and set it as the audio source
+              var audioSrc = URL.createObjectURL(blob);
+              var audio = new Audio(audioSrc);
+              audio.play();
+            });
+          })
+          .catch(function(err) {
+            console.log('Error: ' + err);
+          });
+      }
+  
+      // Stop the MediaRecorder and release the MediaStream
+      function stopRecording() {
+        if (recorder) {
+          recorder.stop();
+          recorder = null;
+          mediaStream.getTracks().forEach(function(track) {
+            track.stop();
+          });
+          mediaStream = null;
+        }
+      }
+  
+      // Add event listener to the Start Recording button
+      var startButton = document.getElementById("startButton");
+      startButton.addEventListener('click', function() {
+        if (recorder) {
+          stopRecording();
+          startButton.textContent = 'Start Recording';
+        } else {
+          startRecording();
+          startButton.textContent = 'Stop Recording';
+        }
+      });
+  
+      // Create an analyzer node to handle microphone input
+      function createAnalyzerNode(stream) {
+        var sourceNode = audioContext.createMediaStreamSource(stream);
+        var analyzerNode = audioContext.createAnalyser();
+        sourceNode.connect(analyzerNode);
+  
+        // Get canvas element for visualization
+        var canvas = document.getElementById("visualizer");
+        var canvasCtx = canvas.getContext("2d");
+  
+        // Analyze the audio data in real-time and visualize it
+        function draw() {
+          requestAnimationFrame(draw);
+  
+          // Get frequency data from the analyzer node
+          var frequencyData = new Uint8Array(analyzerNode.frequencyBinCount);
+          analyzerNode.getByteFrequencyData(frequencyData);
+  
+          // Clear the canvas
+          canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+  
+          // Draw the frequency data as a waveform
+          canvasCtx.beginPath();
+          var sliceWidth = canvas.width / analyzerNode.frequencyBinCount;
+          var x = 0;
+          for (var i = 0; i < analyzerNode.frequencyBinCount; i++) {
+            var value = frequencyData[i] / 255;
+            var y = canvas.height - (value * canvas.height);
+            if (i === 0) {
+              canvasCtx.moveTo(x, y);
+            } else {
+              canvasCtx.lineTo(x, y);
+            }
+            x += sliceWidth;
+          }
+          canvasCtx.strokeStyle = "red";
+          canvasCtx.lineWidt
+    </script>
+</body>
+</html>

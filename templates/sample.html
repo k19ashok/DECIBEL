@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Speech Recognition Example</title>
+  </head>
+  <body>
+    <button id="start-button">Start Recognition</button>
+    <div id="result"></div>
+    
+    <script>
+      const startButton = document.getElementById('start-button');
+      const resultDiv = document.getElementById('result');
+      const recognition = new window.webkitSpeechRecognition();
+      
+      recognition.continuous = true;
+      recognition.lang = 'en-US';
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      
+      startButton.addEventListener('click', () => {
+        recognition.start();
+      });
+      
+      recognition.addEventListener('result', event => {
+        const transcript = event.results[event.results.length - 1][0].transcript;
+        resultDiv.textContent = transcript;
+      });
+      
+      recognition.addEventListener('end', () => {
+        recognition.start();
+      });
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Speech Recognition Example</title>
+  </head>
+  <body>
+    <button id="start-button">Start Recognition</button>
+    <div id="result"></div>
+    
+    <script>
+      const startButton = document.getElementById('start-button');
+      const resultDiv = document.getElementById('result');
+      const recognition = new window.webkitSpeechRecognition();
+      
+      recognition.continuous = true;
+      recognition.lang = 'en-US';
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      
+      startButton.addEventListener('click', () => {
+        recognition.start();
+      });
+      
+      recognition.addEventListener('result', event => {
+        const transcript = event.results[event.results.length - 1][0].transcript;
+        resultDiv.textContent = transcript;
+      });
+      
+      recognition.addEventListener('end', () => {
+        recognition.start();
+      });
+    </script>
+  </body>
+</html>

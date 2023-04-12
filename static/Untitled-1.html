@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Audio-to-Isl Converter</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		/* Reset default browser styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the header */
+header {
+    background-color: #0074D9;
+    color: #FFFFFF;
+    padding: 1em;
+}
+
+/* Style the main content area */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #0074D9;
+    padding: 1em;
+    margin-bottom: 1em;
+    width: 100%;
+    max-width: 500px;
+}
+
+label {
+    margin-bottom: 0.5em;
+}
+
+input[type="file"] {
+    margin-bottom: 1em;
+}
+
+button[type="submit"] {
+    background-color: #0074D9;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #005AB5;
+}
+
+audio {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1em;
+}
+
+/* Style the footer */
+footer {
+    background-color: #F2F2F2;
+    color: #333333;
+    padding: 1em;
+    text-align: center;
+}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Audio-to-Isl Converter</h1>
+	</header>
+
+	<main>
+		<form>
+			<label for="audioFile">Select an audio file:</label>
+			<input type="file" id="audioFile" name="audioFile" accept="audio/*">
+			<br>
+			<button type="submit">Convert</button>
+		</form>
+		<br>
+		<audio controls>
+			<source src="" type="audio/mpeg">
+			Your browser does not support the audio element.
+		</audio>
+	</main>
+
+	<footer>
+		<p>&copy; 2023 Audio-to-Isl Converter</p>
+	</footer>
+</body>
+</html>
