@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -16,6 +17,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Proza+Libre&display=swap"
       rel="stylesheet"
     />
 
@@ -60,8 +72,6 @@
         font-weight: bolder;
         font-family: "Cormorant Garamond", serif;
       }
-      
-
     </style>
   </head>
   <body>
@@ -90,24 +100,331 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">AUDIO TO ISL TRANSLATOR</a>
+              <a class="nav-link" href="#">AUDIO TO ISL TRANSLATOR</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container">
-        <div class="row">
-            <form action="getSigns" method="post">
+      <h1
+        class="my-5"
+        style="
+          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Proza Libre', sans-serif;
+        "
+      >
+        INDIAN SIGN LANGUAGE
+      </h1>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p>
+            Indian Sign Language is a well-structured and coded gesture. Every
+            gesture has a fixed meaning to it. Sign Language is the only means
+            of communication for deaf people. In the past years, there has been
+            an increased interest among researchers in the field of sign
+            language recognition. One of which is to introduce means of
+            interaction from human to computer. Deaf and Dumb people rely on
+            sign language interpreters for communication. Finding experienced
+            and qualified interpreters for their daily communication throughout
+            life is a very difficult task and also unaffordable. Hence, a human
+            to computer interaction system will prove to be a reliable and
+            consistent solution in the future for deaf and dumb people. Many
+            types of research took place in this area that has been carried out
+            for more than twenty years. Sign Language is the only fully
+            accessible language for deaf persons. Learning Indian sign language
+            help a deaf person connect with other deaf person and the larger
+            deaf community. For a hearing person, learning Sign Language is an
+            entirely different experience. But it is still a great process that
+            results in learning a new language. To be able to communicate with
+            the deaf and hard of hearing people in one’s community.
+          </p>
+          <h2
+            class="my-5"
+            style="
+              font-family: 'Cormorant Garamond', serif;
+              font-family: 'Proza Libre', sans-serif;
+            "
+          >
+            CONVERT
+          </h2>
+          <div class="col-12">
+            <div class="row">
+              <form action="getSigns" method="post">
                 {% csrf_token %}
-                <input type="text" name="input_text">
-                <button type="submit">Submit</button>
-            </form>
+                <div class="form-group">
+                  <label for="input_text" class="col-form-label"
+                    >ENTER TEXT</label
+                  >
+                  <input type="text" name="input_text" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
+            <h5 class="my-5">or</h5>
+            <div class="row">
+              <form
+                method="POST"
+                enctype="multipart/form-data"
+                action="getSigns"
+              >
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="audio-file" class="col-form-label"
+                    >Select an audio file:</label
+                  >
+                  <input
+                    type="file"
+                    id="audio-file"
+                    name="audio-file"
+                    accept="audio/*"
+                    class="form-control"
+                  />
+                </div>
+                <input
+                  type="submit"
+                  value="Upload"
+                  class="btn btn-success"
+                  id="send"
+                />
+                <span id="loading">
+
+                </span>
+              </form>
+            </div>
+          </div>
         </div>
+        <div class="col-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'A.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'B.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'C.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'D.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'E.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'F.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'G.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'H.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'I.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'J.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'K.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'L.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'M.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'N.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'O.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'P.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'Q.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'R.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'S.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'T.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'U.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'V.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'W.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'X.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'Y.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'Z.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+            <div class="col-12 col-sm-4 text-center">
+              <img
+                src="{% static 'love-sign.jpg' %}"
+                class="img-thumbnail img-responsive"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <footer class="row bg-info mt-5">
+      <div class="container">
+        <p class="text-right">&copy; 2023 Audio-to-Isl Converter</p>
+      </div>
+    </footer>
+
     <!-- jQuery and Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      var myButton = document.getElementById('send');
+      var load = document.getElementById('loading')
+      console.log(myButton)
+    myButton.addEventListener('click', function() {
+      console.log('Done')
+      load.innerHTML = '<i class="fas fa-spinner fa-spin m-3"></i> Getting Signs...';
+    });
+    </script>
   </body>
 </html>

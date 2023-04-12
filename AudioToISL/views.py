@@ -7,9 +7,10 @@ import re
 import string
 from nltk.stem import WordNetLemmatizer
 import spacy
-from django.http import HttpResponse
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import render
 from django.http import request
+import django.http
 from io import BytesIO
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.editor import concatenate_videoclips
@@ -31,7 +32,7 @@ def lemmatize(s):
     return ' '.join(l)
 
 
-# Remove Punctuations and make the string lowercase
+# Remove Punctuations and digits and make the string lowercase
 def task1(s):
     s = [i for i in s.split() if not i.isdigit(
     ) and not i in string.punctuation and i not in ['a', 'an', 'the']]
@@ -56,9 +57,13 @@ def task2(s):
                 noun_chunks.append(c)
         else:
             noun_chunks.append(c)
+        
 
     for token in doc:
-        if token.is_stop:
+        stop_words = ["am","are","is","was","were","be","being","been","have","has","had",\
+                  "does","did","could","should","would","can","shall","will","may","might","must","let"]
+        print(token)
+        if token.text in stop_words:
             continue
         p = re.compile(re.escape(token.text))
         for i in noun_chunks:
@@ -68,29 +73,27 @@ def task2(s):
                 break
         else:
             tokens.append(token.text)
+        print(token,tokens)
     return tokens
 
 
-s = ''
-
-# VIDEOS_PATH = "C:\\Users\k19as\Desktop\Projects\Decibel\Ashok\Videos"
-# FILENAMES_PATH = "C:\\Users\k19as\Desktop\Final\\filenames.txt"
+VIDEOS_PATH = "C:\\Users\k19as\Desktop\Projects\Decibel\Ashok\Videos"
+FILENAMES_PATH = "C:\\Users\k19as\Desktop\Final\\filenames.txt"
 
 
-# def getFileNames():
-#     filenames = []
-#     with open(FILENAMES_PATH) as f:
-#         for i in f.read().split('\n'):
-#             filenames.append(i)
-#     return filenames
+def getFileNames():
+    filenames = []
+    with open(FILENAMES_PATH) as f:
+        for i in f.read().split('\n'):
+            filenames.append(i)
+    return filenames
 
 
 def get_similar(tokens):
-    files = list(video_names.keys())
+    files = list(getFileNames())
     dictionary = corpora.Dictionary([text.split() for text in files])
 
     # Preprocess the input sentence and convert it to a BoW representation
-    s = 'labour union is playing with cricket ball'
     result = []
     for i in tokens:
         s = dictionary.doc2bow(i.split())
@@ -115,7 +118,7 @@ def getfinal(tokens, result):
         if x.similarity(y) > 0.7:
             out.append(y.text)
         else:
-            out.extend(tokens[i])
+            out.append(list(tokens[i]))
 
 #         x = tokens[i].split()
 #         y = result[i].split()
@@ -131,46 +134,120 @@ def getfinal(tokens, result):
 
 result_video_names = []
 
+import speech_recognition as sr
+from pydub import AudioSegment
+import soundfile
+
+
+def getTextFromAudio(file):
+    print(file)
+    # Open the MP3 file using pydub
+    
+    r = sr.Recognizer()
+    print('Recognizing')
+    data, samplerate = soundfile.read(file)
+    soundfile.write('new.wav', data, samplerate, subtype='PCM_16')
+    with sr.AudioFile('new.wav') as source:
+        audio_data = r.record(source) 
+    text = r.recognize_google(audio_data)
+    print(text)
+    return text
+
+
+VIDEOS_PATH = "C:\\Users\k19as\Desktop\Projects\Decibel\A\\Videos"
 
 def getSigns(request):
-    s = request.POST['input_text']
+    # s = request.POST['input_text']
+    try:
+        file = request.FILES['audio-file']
+        if not file:
+            return HttpResponse('<h1>Invalid file</h1>')
+        with open('audio.mp3','wb') as f:
+            for chunk in file.chunks():
+                    f.write(chunk)
+        s = getTextFromAudio('audio.mp3')
+    except:
+        s = request.POST['input_text']
     tokens = task2(task1(s))
     print(tokens)
     result = get_similar(tokens)
     print(result)
     result_video_names = getfinal(tokens, result)
     print(result_video_names)
-    final_video = downloadVideo(result_video_names)
+    final_video = downloadVideo(request,result_video_names)
+
     return final_video
     # return HttpResponse(f'<h1>{result_video_names}</h1>')
 
 
-with open('C:\\Users\k19as\Desktop\Final\WEB\DECIBEL\static\\file_ids.json') as f:
-    video_names = json.loads(f.read())
+# with open('C:\\Users\k19as\Desktop\Final\WEB\DECIBEL\static\\file_ids.json') as f:
+#     video_names = json.loads(f.read())
 
-def downloadVideo(result_video_names):
+from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
+def getAnimation(letters):
+    images = []
+    letters = [let for let in letters if let!=' ']
+    video_name = ''.join(letters)+'.mp4'
+    for letter in letters:
+        fpath = os.path.join('C:\\Users\k19as\Desktop\Final\WEB\DECIBEL\static\\',letter.upper()+'.jpg')
+        images.append(fpath)
+    duration = 1  # Duration of each frame in seconds
+    fps = 1  # Frame rate of the animation
+    clip = ImageSequenceClip(images, fps=fps).set_duration(len(images)*duration)
+    clip.write_videofile(video_name, fps=fps)
+    return video_name
 
-    import cv2
-    import numpy as np
-    videos = []
+
+def downloadVideo(request,result_video_names):
+    l = []
     for i in result_video_names:
-        file_id = video_names.get(i, '')
-        if not file_id:
-            continue
+        if type(i) == str:
+            v = VideoFileClip(os.path.join(VIDEOS_PATH,i+'.mp4'),audio=False)
+            t = 20 if v.duration > 20 else v.duration
+            v = v.subclip(0, t)
+            l.append(v) 
+        else:
+            p = getAnimation(i)
+            v = VideoFileClip(p, audio=False)
+            t = 20 if v.duration > 20 else v.duration
+            v = v.subclip(0, t)
+            l.append(v)
+    print(l)
+    out = concatenate_videoclips(l,method='compose').without_audio()
+    # res = HttpResponse(content_type='video/mp4')
+    # out.write_videofile(res)
+    out.write_videofile('static/result.mp4')
+    # C:\Users\k19as\Desktop\Final\WEB\DECIBEL\result.mp4
 
-        # Replace with the file URL you want to download
-        file_url = "https://drive.google.com/uc?export=download&id={file_id}"
+    return render(request, 'decibel.html')
 
 
-        # Send a GET request to the file URL
-        response = requests.get(file_url)
+    
+    
+    
+    # import os
+    # import wget
 
-    np_data = np.frombuffer(response.content, dtype=np.uint8)
+    # def download_video_from_drive(file_id, save_path):
+    #     # Get the download URL for the video file
+    #     download_url = f'https://drive.google.com/uc?id={file_id}&export=download'
 
-    # Decode the numpy array into an OpenCV frame
-    frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
+    #     # Download the video file and save it to the specified path
+    #     wget.download(download_url, out=save_path)
 
-    # Create a VideoCapture object from the OpenCV frame
-    cap = cv2.VideoCapture()
-    cap.open(frame)
-    return frame
+    #     print(f'Successfully downloaded video from Google Drive to {save_path}')
+
+    #     return save_path
+    # paths = []
+    # for i in result_video_names:
+    #     file_id = video_names.get(i)
+    #     x = download_video_from_drive(file_id, i+'.mp4')
+    #     paths.append(x)
+    # out = []
+    # for p in paths:
+    #     k = VideoFileClip(p)
+    #     out.append(k)
+
+    # dd = concatenate_videoclips(out).without_audio()
+    # out = HttpResponse(content_type='video/mp4')
+    # dd.write_videofile(out)

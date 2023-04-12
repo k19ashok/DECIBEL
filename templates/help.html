@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const videoUrls = ['https://drive.google.com/uc?export=download&id=1_HaPb9_3ddFPTFNm3zk2jPxrP62JNrpg', 'https://drive.google.com/uc?export=download&id=14fPc-p6tFBM2QgGe6dVQvysbhQ74Bc_F'];
+
+// Create an empty list to hold the video data
+const videoDataList = [];
+
+// Loop through the URLs and make an HTTP request to retrieve the video data
+for (const url of videoUrls) {
+  fetch(url, {mode:"no-cors"})
+    .then(response => response.arrayBuffer())
+    .then(data => {
+      videoDataList.push(data);
+    });
+}
+
+// Once all the video data is loaded, concatenate and display the videos
+Promise.all(videoDataList)
+  .then(dataList => {
+    // Create an empty list to hold the video blobs
+    const blobList = [];
+
+    // Loop through the data and convert it to a blob
+    for (const data of dataList) {
+      blobList.push(new Blob([data], { type: 'video/mp4' }));
+    }
+
+    // Concatenate the blobs into a single blob
+    const concatenatedBlob = new Blob(blobList, { type: 'video/mp4' });
+
+    // Create a URL for the concatenated blob
+    const url = URL.createObjectURL(concatenatedBlob);
+
+    // Display the video in a <video> element
+    const video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    document.body.appendChild(video);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+    </script>
+</body>
+</html>

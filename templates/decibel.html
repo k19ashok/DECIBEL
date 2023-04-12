@@ -1,52 +1,150 @@
-
-
+{% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-	<title>My Webpage</title>
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<!-- Font Awesome CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<style>
-		.logo {
-			border-radius: 50%;
-			height: 50px;
-			width: 50px;
-		}
-	</style>
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg bg-secondary">
-		<div class="container">
-			<!-- Logo -->
-			<a class="navbar-brand" href="#">
-				<img src="https://via.placeholder.com/50" alt="Logo" class="logo">
-			</a>
-			<!-- Title -->
-			<h1 class="navbar-brand mb-0">DECIBEL</h1>
-			<!-- Nav links -->
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    			<span class="navbar-toggler-icon"></span>
-  			</button>
-			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Home</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">About</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Contact</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<!-- jQuery and Bootstrap JS -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+  <head>
+    <title>DECIBEL</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Font Awesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Proza+Libre&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .logo {
+        border-radius: 25%;
+        height: 100px;
+        width: 100px;
+        box-shadow: 0px 0px 5px #fff;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        margin-right: 20px;
+      }
+      .logo:hover {
+        transform: translate(1.3);
+        box-shadow: 0px 0px 20px #f5f0f0;
+      }
+      .navbar-brand {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: #f9c700;
+        font-family: "Roboto", sans-serif;
+      }
+      .navbar-brand span {
+        color: #fff;
+      }
+      .nav-item {
+        margin-right: 20px;
+      }
+      .nav-link {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #f9c700 !important;
+        transition: all 0.3s ease-in-out;
+        font-family: "Cormorant Garamond", serif;
+      }
+      .nav-link:hover {
+        color: #1f4a01 !important;
+      }
+      .title {
+        font-weight: bolder;
+        font-family: "Cormorant Garamond", serif;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+          <img src="../static/ISL.jpg" alt="Logo" class="logo" />
+        </a>
+        <h1 class="title navbar-brand">DECIBEL</h1>
+        <!-- Nav links -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">AUDIO TO ISL TRANSLATOR</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1
+        class="my-5"
+        style="
+          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Proza Libre', sans-serif;
+        "
+      >
+        RESULT VIDEO OF ISL SIGNS
+      </h1>
+      <div>
+        <video width="520" height="400" controls>
+          <source src="{% static 'result.mp4' %}" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <footer class="row bg-info mt-5">
+      <div class="container">
+        <p class="text-right">&copy; 2023 Audio-to-Isl Converter</p>
+      </div>
+    </footer>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+      var myButton = document.getElementById('send');
+    myButton.addEventListener('click', function() {
+      myButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+    });
+    </script>
+  </body>
 </html>
+
+<!-- <div>
+<video width="320" height="240" controls>
+	<source src="{% static 'result.mp4' %}" type="video/mp4">
+  </video>	</div> -->

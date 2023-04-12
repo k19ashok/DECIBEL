@@ -1,27 +1,33 @@
-
+from moviepy.editor import VideoFileClip,concatenate_videoclips
 from views import video_names
 
 def downloadVideo(result_video_names):
+    import os
+    import wget
 
-    import cv2
-    import numpy as np
-    videos = []
+    def download_video_from_drive(file_id, save_path):
+        # Get the download URL for the video file
+        download_url = f'https://drive.google.com/uc?id={file_id}&export=download'
+
+        # Download the video file and save it to the specified path
+        wget.download(download_url, out=save_path)
+
+        print(f'Successfully downloaded video from Google Drive to {save_path}')
+
+        return save_path
+    paths = []
     for i in result_video_names:
-        file_id = video_names.get(i, '')
-        if not file_id:
-            continue
+        file_id = video_names.get(i)
+        x = download_video_from_drive(file_id, i+'.mp4')
+        paths.append(x)
+    out = []
+    for p in paths:
+        k = VideoFileClip(p)
+        out.append(k)
 
-        # Replace with the file URL you want to download
-        file_url = "https://drive.google.com/uc?export=download&id={file_id}"
+    return concatenate_videoclips(out).without_audio()
 
 
-        # Send a GET request to the file URL
-        response = requests.get(file_url)
-
-    np_data = np.frombuffer(response, dtype=np.uint8)
-
-    # Decode the numpy array into an OpenCV frame
-    frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
 
     # Create a VideoCapture object from the OpenCV frame
     cap = cv2.VideoCapture()
